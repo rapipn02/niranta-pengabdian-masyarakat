@@ -1,0 +1,373 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Add Recipe')
+@section('page-title', 'Recipes')
+
+@section('content')
+<style>
+    /* Add Recipe Form Styles */
+    .add-recipe-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .upload-area {
+        width: 100%;
+        height: 180px;
+        border: 2px dashed #C4B5A0;
+        border-radius: 12px;
+        background-color: #F5F0E8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 30px;
+        position: relative;
+    }
+
+    .upload-area:hover {
+        border-color: #8B4513;
+        background-color: #F0EBE3;
+    }
+
+    .upload-area.dragover {
+        border-color: #8B4513;
+        background-color: #EAE5DD;
+    }
+
+    .upload-text {
+        font-size: 16px;
+        color: #666;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+
+    .upload-icon {
+        font-size: 32px;
+        color: #999;
+        margin-bottom: 8px;
+    }
+
+    .upload-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+    .preview-image {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 8px;
+        object-fit: cover;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 18px 24px;
+        border: 2px solid #D4C4B0;
+        border-radius: 12px;
+        background-color: rgba(226, 208, 186, 0.30);
+        font-size: 16px;
+        color: #2C1810;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .form-input:focus {
+        border-color: #8B4513;
+        background-color: rgba(226, 208, 186, 0.50);
+        box-shadow: 0 0 10px rgba(139, 69, 19, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #8B7355;
+        opacity: 0.8;
+    }
+
+    .form-select {
+        width: 100%;
+        padding: 18px 24px;
+        border: 2px solid #D4C4B0;
+        border-radius: 12px;
+        background-color: rgba(226, 208, 186, 0.30);
+        font-size: 16px;
+        color: #2C1810;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: 'Arial', sans-serif;
+        cursor: pointer;
+    }
+
+    .form-select:focus {
+        border-color: #8B4513;
+        background-color: rgba(226, 208, 186, 0.50);
+        box-shadow: 0 0 10px rgba(139, 69, 19, 0.1);
+    }
+
+    .form-textarea {
+        width: 100%;
+        padding: 18px 24px;
+        border: 2px solid #D4C4B0;
+        border-radius: 12px;
+        background-color: rgba(226, 208, 186, 0.30);
+        font-size: 16px;
+        color: #2C1810;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: 'Arial', sans-serif;
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-textarea:focus {
+        border-color: #8B4513;
+        background-color: rgba(226, 208, 186, 0.50);
+        box-shadow: 0 0 10px rgba(139, 69, 19, 0.1);
+    }
+
+    .form-textarea::placeholder {
+        color: #8B7355;
+        opacity: 0.8;
+    }
+
+    .submit-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 40px;
+    }
+
+    .btn-submit {
+        background-color: #8B4513;
+        color: white;
+        padding: 15px 40px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: none;
+        letter-spacing: 0.5px;
+    }
+
+    .btn-submit:hover {
+        background-color: #A0522D;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+    }
+
+    .btn-submit:active {
+        transform: translateY(0);
+    }
+
+    /* Remove file info */
+    .file-info {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        z-index: 10;
+    }
+
+    .remove-file {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 12px;
+        cursor: pointer;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .add-recipe-form {
+            max-width: 100%;
+        }
+
+        .upload-area {
+            height: 150px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            padding: 15px 20px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .submit-container {
+            justify-content: stretch;
+        }
+    }
+</style>
+
+<div class="add-recipe-form">
+    <!-- Success Message -->
+    @if(session('success'))
+        <div style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #c3e6cb;">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Error Messages -->
+    @if($errors->any())
+        <div style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #f5c6cb;">
+            <ul style="margin: 0; padding-left: 20px;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('admin.recipes.store') }}" enctype="multipart/form-data">
+        @csrf
+        
+        <!-- Upload Photo Area -->
+        <div class="upload-area" id="uploadArea">
+            <input type="file" name="image" id="recipeImage" class="upload-input" accept="image/*">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Upload Foto</div>
+        </div>
+
+        <!-- Nama Resep -->
+        <div class="form-group">
+            <input type="text" name="nama_resep" class="form-input" placeholder="Nama Resep" required>
+        </div>
+
+        <!-- Jenis -->
+        <div class="form-group">
+            <select name="jenis" class="form-select" required>
+                <option value="">Pilih Jenis</option>
+                <option value="drink">Drinks</option>
+                <option value="dessert">Dessert</option>
+            </select>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="form-group">
+            <textarea name="deskripsi" class="form-textarea" placeholder="Deskripsi resep (akan muncul di card user)" required style="min-height: 80px;"></textarea>
+        </div>
+
+        <!-- Bahan-bahan -->
+        <div class="form-group">
+            <textarea name="bahan" class="form-textarea" placeholder="Bahan-bahan (pisahkan dengan enter)" required></textarea>
+        </div>
+
+        <!-- Cara Membuat -->
+        <div class="form-group">
+            <textarea name="cara_membuat" class="form-textarea" placeholder="Cara Membuat (pisahkan langkah dengan enter)" required></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="submit-container">
+            <button type="submit" class="btn-submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadArea = document.getElementById('uploadArea');
+    let uploadInput = document.getElementById('recipeImage');
+
+    // Handle file selection
+    function handleFileSelection(e) {
+        const file = e.target.files[0];
+        if (file) {
+            displayImage(file);
+        }
+    }
+
+    uploadInput.addEventListener('change', handleFileSelection);
+
+    // Handle drag and drop
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('image/')) {
+                // Update the input files properly
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                uploadInput.files = dt.files;
+                displayImage(file);
+            }
+        }
+    });
+
+    function displayImage(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Store current input reference before changing innerHTML
+            const currentFiles = uploadInput.files;
+            
+            uploadArea.innerHTML = `
+                <button type="button" class="remove-file" onclick="removeImage()">×</button>
+                <div class="file-info">${file.name}</div>
+                <img src="${e.target.result}" alt="Preview" class="preview-image">
+                <input type="file" name="image" id="recipeImage" class="upload-input" accept="image/*" style="opacity: 0;">
+            `;
+            
+            // Get new input and restore files
+            uploadInput = document.getElementById('recipeImage');
+            uploadInput.files = currentFiles;
+            uploadInput.addEventListener('change', handleFileSelection);
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Remove image function
+    window.removeImage = function() {
+        uploadArea.innerHTML = `
+            <input type="file" name="image" id="recipeImage" class="upload-input" accept="image/*">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Upload Foto</div>
+        `;
+        
+        // Re-attach event listeners
+        uploadInput = document.getElementById('recipeImage');
+        uploadInput.addEventListener('change', handleFileSelection);
+    };
+});
+</script>
+@endsection

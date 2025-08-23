@@ -1,0 +1,91 @@
+<?php
+
+return [
+    // Navigation
+    'home' => 'Beranda',
+    'products' => 'Produk',
+    'recipes' => 'Resep',
+    'blogs' => 'Blog',
+    'contact' => 'Hubungi Kami',
+    'login' => 'Masuk',
+    'logout' => 'Keluar',
+    'language' => 'Bahasa',
+
+    // Home Page - Niranta Specific
+    'welcome_title' => 'Niranta Palm Sugar',
+    'welcome_subtitle' => 'Since 2012',
+    'buy_now' => 'Buy now',
+    'our_product' => 'PRODUK KAMI',
+    'product_description_text' => 'Menghadirkan gula aren murni dari alam, dengan proses tradisional yang mempertahankan cita rasa autentik dan nilai gizi alami.',
+    'product_tagline' => 'Menghadirkan gula aren murni dari alam, dengan proses tradisional yang menjaga cita rasa dan kualitas terbaik!',
+    'our_history' => 'Sejarah Kami',
+    'our_history_text' => 'Niranta, didirikan di Padang pada tahun 2015, dimulai dengan menjual gula aren padat di pasar tradisional, mencapai penjualan sekitar 2 ton per minggu. Pada tahun 2019, Niranta berinovasi dengan meluncurkan gula aren bubuk, memperluas pasarnya ke minimarket dan toko online.',
+    'why_choose_us' => 'Mengapa memilih kami?',
+    'why_choose_us_text' => 'Karena kami tetap setia pada rasa asli dari proses tradisional, dibuat higienis, 100% autentik, dan tentu saja halal. Asli enaknya, asli aman-nya!',
+    'today_recipes' => 'Resep Hari Ini',
+    'check_favorite_recipes' => 'Cek resep favorit',
+    'check_other_recipes' => 'cek resep lainnya',
+    'recipe_subtitle' => 'Lihat apa saja cara paling istimewa untuk anak cucu untuk ganda manfaat.',
+    'natural_delicious_tagline' => 'Lezat alami dari nira pilihan,<br>sempurna untuk setiap resep!',
+    'featured_products' => 'Produk Unggulan',
+    'latest_recipes' => 'Resep Terbaru',
+    'latest_blogs' => 'Blog Terbaru',
+    'view_all' => 'Lihat Semua',
+    'learn_more' => 'Pelajari Lebih Lanjut',
+
+    // Product Page
+    'our_products' => 'Produk Kami',
+    'product_description' => 'Deskripsi Produk',
+    'product_specifications' => 'Spesifikasi Produk',
+    'product_price' => 'Harga',
+    'product_category' => 'Kategori',
+
+    // Recipe Page
+    'our_recipes' => 'Resep Kami',
+    'ingredients' => 'Bahan-bahan',
+    'instructions' => 'Cara Membuat',
+    'prep_time' => 'Waktu Persiapan',
+    'cook_time' => 'Waktu Memasak',
+    'servings' => 'Porsi',
+    'difficulty' => 'Tingkat Kesulitan',
+    'easy' => 'Mudah',
+    'medium' => 'Sedang',
+    'hard' => 'Sulit',
+
+    // Blog Page
+    'our_blogs' => 'Blog Kami',
+    'read_more' => 'Baca Selengkapnya',
+    'published_on' => 'Dipublikasikan pada',
+    'by_author' => 'Oleh',
+    'tags' => 'Tag',
+    'category' => 'Kategori',
+
+    // Contact Page
+    'contact_us' => 'Hubungi Kami',
+    'contact_form' => 'Form Kontak',
+    'your_name' => 'Nama Anda',
+    'your_email' => 'Email Anda',
+    'subject' => 'Subjek',
+    'message' => 'Pesan',
+    'send_message' => 'Kirim Pesan',
+    'contact_info' => 'Informasi Kontak',
+    'address' => 'Alamat',
+    'phone' => 'Telepon',
+    'email' => 'Email',
+
+    // Common
+    'search' => 'Cari',
+    'back' => 'Kembali',
+    'next' => 'Selanjutnya',
+    'previous' => 'Sebelumnya',
+    'loading' => 'Memuat...',
+    'no_results' => 'Tidak ada hasil ditemukan',
+    'error' => 'Terjadi kesalahan',
+    'success' => 'Berhasil',
+    'submit' => 'Kirim',
+    'cancel' => 'Batal',
+    'save' => 'Simpan',
+    'delete' => 'Hapus',
+    'edit' => 'Edit',
+    'add' => 'Tambah',
+];

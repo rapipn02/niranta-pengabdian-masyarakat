@@ -1,0 +1,91 @@
+<?php
+
+return [
+    // Navigation
+    'home' => 'Home',
+    'products' => 'Products',
+    'recipes' => 'Recipes',
+    'blogs' => 'Blogs',
+    'contact' => 'Contact Us',
+    'login' => 'Login',
+    'logout' => 'Logout',
+    'language' => 'Language',
+
+    // Home Page
+    'welcome_title' => 'Niranta Palm Sugar',
+    'welcome_subtitle' => 'Since 2012',
+    'buy_now' => 'Buy now',
+    'our_product' => 'OUR PRODUCTS',
+    'product_description_text' => 'Bringing pure palm sugar from nature, with traditional processes that maintain authentic taste and natural nutritional value.',
+    'product_tagline' => 'Bringing pure palm sugar from nature, with traditional processes that preserve the best taste and quality!',
+    'our_history' => 'Our History',
+    'our_history_text' => 'Niranta, founded in Padang in 2015, began by selling solid palm sugar in traditional markets, reaching sales of around 2 tons per week. In 2019, Niranta innovated by launching powdered palm sugar, expanding its market to minimarkets and online stores.',
+    'why_choose_us' => 'Why Choose Us?',
+    'why_choose_us_text' => 'Because we remain faithful to the original taste from traditional processes, made hygienically, 100% authentic, and of course halal. Truly delicious, truly safe!',
+    'today_recipes' => 'Today\'s Recipes',
+    'check_favorite_recipes' => 'Check favorite recipes',
+    'check_other_recipes' => 'check other recipes',
+    'recipe_subtitle' => 'See the most special ways for generations to get double benefits.',
+    'natural_delicious_tagline' => 'Natural deliciousness from selected palm sap,<br>perfect for every recipe!',
+    'featured_products' => 'Featured Products',
+    'latest_recipes' => 'Latest Recipes',
+    'latest_blogs' => 'Latest Blogs',
+    'view_all' => 'View All',
+    'learn_more' => 'Learn More',
+
+    // Product Page
+    'our_products' => 'Our Products',
+    'product_description' => 'Product Description',
+    'product_specifications' => 'Product Specifications',
+    'product_price' => 'Price',
+    'product_category' => 'Category',
+
+    // Recipe Page
+    'our_recipes' => 'Our Recipes',
+    'ingredients' => 'Ingredients',
+    'instructions' => 'Instructions',
+    'prep_time' => 'Prep Time',
+    'cook_time' => 'Cook Time',
+    'servings' => 'Servings',
+    'difficulty' => 'Difficulty',
+    'easy' => 'Easy',
+    'medium' => 'Medium',
+    'hard' => 'Hard',
+
+    // Blog Page
+    'our_blogs' => 'Our Blogs',
+    'read_more' => 'Read More',
+    'published_on' => 'Published on',
+    'by_author' => 'By',
+    'tags' => 'Tags',
+    'category' => 'Category',
+
+    // Contact Page
+    'contact_us' => 'Contact Us',
+    'contact_form' => 'Contact Form',
+    'your_name' => 'Your Name',
+    'your_email' => 'Your Email',
+    'subject' => 'Subject',
+    'message' => 'Message',
+    'send_message' => 'Send Message',
+    'contact_info' => 'Contact Information',
+    'address' => 'Address',
+    'phone' => 'Phone',
+    'email' => 'Email',
+
+    // Common
+    'search' => 'Search',
+    'back' => 'Back',
+    'next' => 'Next',
+    'previous' => 'Previous',
+    'loading' => 'Loading...',
+    'no_results' => 'No results found',
+    'error' => 'An error occurred',
+    'success' => 'Success',
+    'submit' => 'Submit',
+    'cancel' => 'Cancel',
+    'save' => 'Save',
+    'delete' => 'Delete',
+    'edit' => 'Edit',
+    'add' => 'Add',
+];

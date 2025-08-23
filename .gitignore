@@ -1,0 +1,60 @@
+# Environment files - NEVER commit these
+.env
+.env.*
+!.env.example
+
+# Sensitive files
+/auth.json
+update_admin_password.php
+/config/database.php.backup
+
+# Laravel specific
+/bootstrap/cache/*.php
+/storage/*.key
+/storage/app/public/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/testing/*
+/storage/framework/views/*
+/storage/logs/*.log
+/storage/pail
+
+# Dependencies
+/node_modules
+/vendor
+
+# Build artifacts
+/public/build
+/public/hot
+/public/storage
+/public/mix-manifest.json
+
+# Testing
+.phpunit.result.cache
+/.phpunit.cache
+/coverage
+
+# IDEs
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
+.phpactor.json
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.log
+
+# Deployment
+Homestead.json
+Homestead.yaml
+/.vagrant
+
+# Database
+/database/*.sqlite
+/database/*.db
+
+# Cache
+*.cache
