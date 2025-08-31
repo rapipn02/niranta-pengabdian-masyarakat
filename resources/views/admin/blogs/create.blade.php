@@ -275,6 +275,23 @@
             <textarea name="content" class="form-textarea content" placeholder="Konten lengkap blog..." required></textarea>
         </div>
 
+        <!-- Status Checkboxes -->
+        <div class="form-group" style="margin-bottom: 30px;">
+            <label style="font-size: 16px; font-weight: 600; color: #2C1810; margin-bottom: 15px; display: block;">Status</label>
+            
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                <input type="checkbox" id="is_published" name="is_published" value="1" checked 
+                       style="width: 18px; height: 18px; accent-color: #8B4513;">
+                <label for="is_published" style="font-size: 14px; color: #2C1810; cursor: pointer;">Published (Dipublikasikan)</label>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="checkbox" id="is_featured" name="is_featured" value="1" 
+                       style="width: 18px; height: 18px; accent-color: #8B4513;">
+                <label for="is_featured" style="font-size: 14px; color: #2C1810; cursor: pointer;">Featured (Unggulan)</label>
+            </div>
+        </div>
+
         <!-- Submit Button -->
         <div class="submit-container">
             <button type="submit" class="btn-submit">Submit</button>

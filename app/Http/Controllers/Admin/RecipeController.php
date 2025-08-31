@@ -48,10 +48,18 @@ class RecipeController extends Controller
         $validated['bahan'] = $bahanArray;
 
         if ($request->hasFile('image')) {
-            // Store directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/recipes');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'recipe_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/recipes'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/recipes/' . $imageName;
         }
 
@@ -94,15 +102,26 @@ class RecipeController extends Controller
         $validated['bahan'] = $bahanArray;
 
         if ($request->hasFile('image')) {
-            // Delete old image from public folder
-            if ($recipe->image && file_exists(public_path($recipe->image))) {
-                unlink(public_path($recipe->image));
+            // Delete old image from storage
+            if ($recipe->image) {
+                $oldImagePath = storage_path('app/public/' . $recipe->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
             
-            // Store new image directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/recipes');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'recipe_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/recipes'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/recipes/' . $imageName;
         }
 
@@ -174,9 +193,12 @@ class RecipeController extends Controller
      */
     public function destroy(Recipe $recipe)
     {
-        // Delete image file from public folder
-        if ($recipe->image && file_exists(public_path($recipe->image))) {
-            unlink(public_path($recipe->image));
+        // Delete image file from storage
+        if ($recipe->image) {
+            $imagePath = storage_path('app/public/' . $recipe->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         $recipe->delete();

@@ -41,10 +41,18 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Store directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/products');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'product_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/products'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/products/' . $imageName;
         }
 
@@ -119,15 +127,26 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete old image from public folder
-            if ($product->image && file_exists(public_path($product->image))) {
-                unlink(public_path($product->image));
+            // Delete old image from storage
+            if ($product->image) {
+                $oldImagePath = storage_path('app/public/' . $product->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
             
-            // Store new image directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/products');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'product_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/products'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/products/' . $imageName;
         }
 
@@ -145,9 +164,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // Delete image file from public folder
-        if ($product->image && file_exists(public_path($product->image))) {
-            unlink(public_path($product->image));
+        // Delete image file from storage
+        if ($product->image) {
+            $imagePath = storage_path('app/public/' . $product->image);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
 
         $product->delete();

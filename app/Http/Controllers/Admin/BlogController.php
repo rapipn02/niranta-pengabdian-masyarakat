@@ -49,11 +49,23 @@ class BlogController extends Controller
             $validated['author'] = 'Admin';
         }
 
+        // Handle checkbox values (checkboxes don't send value if unchecked)
+        $validated['is_published'] = $request->has('is_published') ? true : true; // Default to published
+        $validated['is_featured'] = $request->has('is_featured') ? true : false;
+
         if ($request->hasFile('image')) {
-            // Store directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/blogs');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'blog_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/blogs'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/blogs/' . $imageName;
         }
 
@@ -97,16 +109,31 @@ class BlogController extends Controller
             $validated['author'] = 'Admin';
         }
 
+        // Handle checkbox values (checkboxes don't send value if unchecked)
+        $validated['is_published'] = $request->has('is_published') ? true : false;
+        $validated['is_featured'] = $request->has('is_featured') ? true : false;
+
         if ($request->hasFile('image')) {
-            // Delete old image from public folder
-            if ($blog->image && file_exists(public_path($blog->image))) {
-                unlink(public_path($blog->image));
+            // Delete old image from storage
+            if ($blog->image) {
+                $oldImagePath = storage_path('app/public/' . $blog->image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
             }
             
-            // Store new image directly in public folder
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/images/blogs');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
             $image = $request->file('image');
             $imageName = 'blog_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/blogs'), $imageName);
+            
+            // Move file to storage with exact name
+            $image->move($storageDir, $imageName);
             $validated['image'] = 'images/blogs/' . $imageName;
         }
 

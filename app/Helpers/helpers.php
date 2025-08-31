@@ -2,7 +2,7 @@
 
 if (!function_exists('image_url')) {
     /**
-     * Generate URL for images stored in public_html/images/
+     * Generate URL for images stored in storage/app/public/
      * 
      * @param string $path
      * @return string
@@ -12,14 +12,11 @@ if (!function_exists('image_url')) {
             return '';
         }
         
-        // Remove 'images/' if it exists at the beginning
+        // Remove leading slash if exists
         $path = ltrim($path, '/');
-        if (strpos($path, 'images/') === 0) {
-            $path = substr($path, 7); // Remove 'images/' prefix
-        }
         
-        // Always use root domain for images (hardcoded for now)
-        return 'https://nirantagulaaren.com/images/' . $path;
+        // Return storage URL
+        return asset('storage/' . $path);
     }
 }
 
@@ -32,7 +29,7 @@ if (!function_exists('product_image')) {
      */
     function product_image($imagePath) {
         if (empty($imagePath)) {
-            return image_url('placeholder-product.jpg');
+            return asset('storage/images/placeholder-product.jpg');
         }
         
         return image_url($imagePath);
@@ -48,7 +45,7 @@ if (!function_exists('recipe_image')) {
      */
     function recipe_image($imagePath) {
         if (empty($imagePath)) {
-            return image_url('placeholder-recipe.jpg');
+            return asset('storage/images/placeholder-recipe.jpg');
         }
         
         return image_url($imagePath);
@@ -64,7 +61,7 @@ if (!function_exists('blog_image')) {
      */
     function blog_image($imagePath) {
         if (empty($imagePath)) {
-            return image_url('placeholder-blog.jpg');
+            return asset('storage/images/placeholder-blog.jpg');
         }
         
         return image_url($imagePath);
