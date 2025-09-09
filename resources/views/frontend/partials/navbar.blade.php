@@ -11,9 +11,11 @@
         <!-- Desktop Navigation - Very compact spacing like in image -->
         <div class="flex items-center space-x-8" id="desktop-menu">
             <a href="{{ route('home') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.home') }}</a>
+            
             <a href="{{ route('product') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.product') }}</a>
             <a href="{{ route('resep') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.recipe') }}</a>
             <a href="{{ route('blogs') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.blogs') }}</a>
+            <a href="{{ route('about') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.about') }}</a>
             <a href="{{ route('contact') }}" class="text-white hover:text-amber-300 text-xs font-medium tracking-wide uppercase transition-colors duration-200 drop-shadow-lg" style="font-family: 'Poppins', sans-serif;">{{ __('messages.nav.contact') }}</a>
             
             @auth
@@ -220,6 +222,26 @@
            onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" 
            onmouseout="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">
             <span>{{ __('messages.nav.blogs') }}</span>
+        </a>
+        
+        <a href="{{ route('about') }}" class="mobile-menu-item" style="
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 18px 25px;
+            margin: 0 15px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        " onclick="toggleMobileMenu()" 
+           onmouseover="this.style.backgroundColor='rgba(255, 255, 255, 0.15)'; this.style.transform='translateX(5px)'; this.style.borderColor='rgba(255, 255, 255, 0.3)'" 
+           onmouseout="this.style.backgroundColor='rgba(255, 255, 255, 0.05)'; this.style.transform='translateX(0)'; this.style.borderColor='rgba(255, 255, 255, 0.1)'">
+            <span>{{ __('messages.nav.about') }}</span>
         </a>
         
         <a href="{{ route('contact') }}" class="mobile-menu-item" style="

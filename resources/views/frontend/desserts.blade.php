@@ -79,10 +79,10 @@
                         background-size: cover;
                         background-position: center;
                         position: relative;
-                        @if($dessert->image)
-                            background-image: url('{{ recipe_image($dessert->image) }}');
+                        @if($dessert->image && file_exists(public_path($dessert->image)))
+                            background-image: url('{{ asset($dessert->image) }}');
                         @else
-                            background-image: url('{{ recipe_image('placeholder-recipe.jpg') }}');
+                            background-image: url('{{ asset('makanan1.png') }}');
                         @endif
                     ">
                         <div style="

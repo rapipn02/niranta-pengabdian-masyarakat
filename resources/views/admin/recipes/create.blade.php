@@ -253,7 +253,14 @@
         <div class="upload-area" id="uploadArea">
             <input type="file" name="image" id="recipeImage" class="upload-input" accept="image/*">
             <div class="upload-icon">📷</div>
-            <div class="upload-text">Upload Foto</div>
+            <div class="upload-text">Upload Foto (untuk resep list & blog)</div>
+        </div>
+
+        <!-- Upload Video Area -->
+        <div class="upload-area" id="uploadVideoArea">
+            <input type="file" name="video" id="recipeVideo" class="upload-input" accept="video/*">
+            <div class="upload-icon">🎥</div>
+            <div class="upload-text">Upload Video (opsional - untuk detail resep)</div>
         </div>
 
         <!-- Nama Resep -->
@@ -295,9 +302,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const uploadArea = document.getElementById('uploadArea');
+    const uploadVideoArea = document.getElementById('uploadVideoArea');
     let uploadInput = document.getElementById('recipeImage');
+    let uploadVideoInput = document.getElementById('recipeVideo');
 
-    // Handle file selection
+    // Handle file selection for image
     function handleFileSelection(e) {
         const file = e.target.files[0];
         if (file) {
@@ -356,18 +365,70 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     }
 
+    // Handle video selection
+    function handleVideoSelection(e) {
+        const file = e.target.files[0];
+        if (file) {
+            displayVideo(file);
+        }
+    }
+
+    // Display video preview
+    function displayVideo(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            // Store the original files before replacing HTML
+            const originalFiles = uploadVideoInput.files;
+            
+            uploadVideoArea.innerHTML = `
+                <button type="button" class="remove-file" onclick="removeVideo()">×</button>
+                <div class="file-info">${file.name}</div>
+                <video src="${e.target.result}" class="preview-image" controls style="max-height: 200px;"></video>
+                <input type="file" name="video" id="recipeVideo" class="upload-input" accept="video/*" style="opacity: 0;">
+            `;
+            
+            // Get new input and restore files
+            uploadVideoInput = document.getElementById('recipeVideo');
+            
+            // Create a new DataTransfer to set files
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            uploadVideoInput.files = dt.files;
+            
+            uploadVideoInput.addEventListener('change', handleVideoSelection);
+        };
+        reader.readAsDataURL(file);
+    }
+
     // Remove image function
     window.removeImage = function() {
         uploadArea.innerHTML = `
             <input type="file" name="image" id="recipeImage" class="upload-input" accept="image/*">
             <div class="upload-icon">📷</div>
-            <div class="upload-text">Upload Foto</div>
+            <div class="upload-text">Upload Foto (untuk resep list & blog)</div>
         `;
         
         // Re-attach event listeners
         uploadInput = document.getElementById('recipeImage');
         uploadInput.addEventListener('change', handleFileSelection);
     };
+
+    // Remove video function
+    window.removeVideo = function() {
+        uploadVideoArea.innerHTML = `
+            <input type="file" name="video" id="recipeVideo" class="upload-input" accept="video/*">
+            <div class="upload-icon">🎥</div>
+            <div class="upload-text">Upload Video (opsional - untuk detail resep)</div>
+        `;
+        
+        // Re-attach event listeners
+        uploadVideoInput = document.getElementById('recipeVideo');
+        uploadVideoInput.addEventListener('change', handleVideoSelection);
+    };
+
+    // Add event listeners
+    uploadInput.addEventListener('change', handleFileSelection);
+    uploadVideoInput.addEventListener('change', handleVideoSelection);
 });
 </script>
 @endsection

@@ -209,7 +209,7 @@
         
         <!-- Upload Photo Area -->
         <div class="upload-area" id="uploadArea">
-            <input type="file" name="image" id="productImage" class="upload-input" accept="image/*">
+            <input type="file" name="image" id="productImage" class="upload-input" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
             <div class="upload-icon">📷</div>
             <div class="upload-text">Upload Foto</div>
         </div>
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button type="button" class="remove-file" onclick="removeImage()">×</button>
                 <div class="file-info">${file.name}</div>
                 <img src="${e.target.result}" alt="Preview" class="preview-image">
-                <input type="file" name="image" id="productImage" class="upload-input" accept="image/*" style="opacity: 0;">
+                <input type="file" name="image" id="productImage" class="upload-input" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" style="opacity: 0;">
             `;
             
             // Get new input and restore files
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Remove image function
     window.removeImage = function() {
         uploadArea.innerHTML = `
-            <input type="file" name="image" id="productImage" class="upload-input" accept="image/*">
+            <input type="file" name="image" id="productImage" class="upload-input" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp">
             <div class="upload-icon">📷</div>
             <div class="upload-text">Upload Foto</div>
         `;

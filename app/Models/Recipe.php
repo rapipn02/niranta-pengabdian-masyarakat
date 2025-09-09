@@ -17,6 +17,7 @@ class Recipe extends Model
         'bahan',
         'cara_membuat',
         'image',
+        'video',
         'is_active'
     ];
 

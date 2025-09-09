@@ -50,7 +50,7 @@ class BlogController extends Controller
         }
 
         // Handle checkbox values (checkboxes don't send value if unchecked)
-        $validated['is_published'] = $request->has('is_published') ? true : true; // Default to published
+        $validated['is_published'] = $request->has('is_published') ? true : false;
         $validated['is_featured'] = $request->has('is_featured') ? true : false;
 
         if ($request->hasFile('image')) {
@@ -153,14 +153,35 @@ class BlogController extends Controller
     {
         $translateService = new GoogleTranslateService();
         
-        // Translate judul blog
-        $translatedTitle = $translateService->translate($blog->judul_blog, 'en', 'id');
-        
-        // Translate excerpt
-        $translatedExcerpt = $translateService->translate($blog->excerpt, 'en', 'id');
-        
-        // Translate content
-        $translatedContent = $translateService->translate($blog->content, 'en', 'id');
+        try {
+            // Translate judul blog
+            $translatedTitle = $translateService->translate($blog->judul_blog, 'en', 'id');
+            
+            // Translate excerpt
+            $translatedExcerpt = $translateService->translate($blog->excerpt, 'en', 'id');
+            
+            // Translate content
+            $translatedContent = $translateService->translate($blog->content, 'en', 'id');
+            
+            // Check if translation actually worked (not same as original)
+            $translationWorked = ($translatedTitle !== $blog->judul_blog) || 
+                               ($translatedExcerpt !== $blog->excerpt) || 
+                               ($translatedContent !== $blog->content);
+            
+            if (!$translationWorked) {
+                \Log::warning('Google Translate may have failed - using fallback translations for blog: ' . $blog->id);
+                // Use fallback English translations
+                $translatedTitle = $this->getFallbackTitle($blog->judul_blog);
+                $translatedExcerpt = $this->getFallbackExcerpt($blog->excerpt);
+                $translatedContent = $this->getFallbackContent($blog->content);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Translation failed for blog ' . $blog->id . ': ' . $e->getMessage());
+            // Use fallback English translations
+            $translatedTitle = $this->getFallbackTitle($blog->judul_blog);
+            $translatedExcerpt = $this->getFallbackExcerpt($blog->excerpt);
+            $translatedContent = $this->getFallbackContent($blog->content);
+        }
 
         // Use DB query instead of model for now
         DB::table('blog_translations')->updateOrInsert(
@@ -191,6 +212,36 @@ class BlogController extends Controller
                 'created_at' => now()
             ]
         );
+    }
+
+    /**
+     * Fallback English translations when Google Translate fails
+     */
+    private function getFallbackTitle($indonesianTitle)
+    {
+        // Simple fallback - you can expand this with more mappings
+        $fallbacks = [
+            'Perbedaan Antara Gula Aren dan Gula Merah' => 'The Difference Between Palm Sugar and Brown Sugar',
+            'niranta sangat bagus' => 'Niranta is Very Good',
+            // Add more common translations here
+        ];
+        
+        return $fallbacks[$indonesianTitle] ?? $indonesianTitle . ' (Indonesian)';
+    }
+    
+    private function getFallbackExcerpt($indonesianExcerpt)
+    {
+        // Simple fallback
+        if (strlen($indonesianExcerpt) > 100) {
+            return 'Find out more about this topic in our detailed article. ' . substr($indonesianExcerpt, 0, 50) . '...';
+        }
+        return 'Discover more about: ' . $indonesianExcerpt;
+    }
+    
+    private function getFallbackContent($indonesianContent)
+    {
+        // Simple fallback
+        return "This article is originally written in Indonesian. Here's the content:\n\n" . $indonesianContent . "\n\n(English translation will be available soon)";
     }
 
     /**

@@ -32,6 +32,7 @@ return [
     'latest_blogs' => 'Latest Blogs',
     'view_all' => 'View All',
     'learn_more' => 'Learn More',
+    'see_more' => 'See More',
 
     // Product Page
     'our_products' => 'Our Products',
@@ -72,6 +73,35 @@ return [
     'address' => 'Address',
     'phone' => 'Phone',
     'email' => 'Email',
+
+    // About Us Page
+    'about_us' => 'About Us',
+    'company_profile' => 'Company Profile',
+    'our_certify' => 'Our Certifications',
+    'mission_title' => 'Mission',
+    'mission_text' => 'To provide high-quality palm sugar produced traditionally and sustainably to meet the needs of global consumers.',
+    'vision_title' => 'Vision',
+    'vision_text' => 'To become a leading palm sugar producer known for premium quality and commitment to environmental sustainability.',
+    'values_title' => 'Values',
+    'value_quality' => 'Quality',
+    'value_quality_text' => 'Prioritizing the best quality in every product we produce.',
+    'value_sustainability' => 'Sustainability',
+    'value_sustainability_text' => 'Committed to environmentally friendly production practices.',
+    'value_tradition' => 'Traditional',
+    'value_tradition_text' => 'Maintaining traditional methods in the production process.',
+    'value_innovation' => 'Innovation',
+    'value_innovation_text' => 'Continuously innovating to deliver the best products.',
+    'niranta_excellence' => 'Niranta Excellence',
+    'card1_title' => '100% Natural and Organic',
+    'card1_text' => 'Made from organic palm sap without chemicals, artificial sweeteners, coloring, or preservatives.',
+    'card2_title' => 'Partnership with Trained Farmers',
+    'card2_text' => 'Work directly with local farmers who have been trained in sustainable farming methods.',
+    'card3_title' => 'Healthy and Safe for Consumption',
+    'card3_text' => 'Low glycemic index and rich in natural minerals that are good for the body.',
+    'card4_title' => 'Clean and Controlled Production',
+    'card4_text' => 'Every step of the process follows strict hygiene standards to ensure quality and safety.',
+    'card5_title' => '100% Natural and Organic',
+    'card5_text' => 'Made from organic palm sap without chemicals, artificial sweeteners, coloring, or preservatives.',
 
     // Common
     'search' => 'Search',

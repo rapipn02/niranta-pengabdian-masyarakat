@@ -32,6 +32,7 @@ return [
     'latest_blogs' => 'Blog Terbaru',
     'view_all' => 'Lihat Semua',
     'learn_more' => 'Pelajari Lebih Lanjut',
+    'see_more' => 'See More',
 
     // Product Page
     'our_products' => 'Produk Kami',
@@ -72,6 +73,35 @@ return [
     'address' => 'Alamat',
     'phone' => 'Telepon',
     'email' => 'Email',
+
+    // About Us Page
+    'about_us' => 'Tentang Kami',
+    'company_profile' => 'Profil Perusahaan',
+    'our_certify' => 'Sertifikat Kami',
+    'mission_title' => 'Misi',
+    'mission_text' => 'Menyediakan gula aren berkualitas tinggi yang diproduksi secara tradisional dan berkelanjutan untuk memenuhi kebutuhan konsumen global.',
+    'vision_title' => 'Visi',
+    'vision_text' => 'Menjadi produsen gula aren terdepan yang dikenal dengan kualitas premium dan komitmen terhadap keberlanjutan lingkungan.',
+    'values_title' => 'Nilai-Nilai',
+    'value_quality' => 'Kualitas',
+    'value_quality_text' => 'Mengutamakan kualitas terbaik dalam setiap produk yang kami hasilkan.',
+    'value_sustainability' => 'Berkelanjutan',
+    'value_sustainability_text' => 'Berkomitmen pada praktik produksi yang ramah lingkungan.',
+    'value_tradition' => 'Tradisional',
+    'value_tradition_text' => 'Mempertahankan metode tradisional dalam proses produksi.',
+    'value_innovation' => 'Inovasi',
+    'value_innovation_text' => 'Terus berinovasi untuk menghadirkan produk terbaik.',
+    'niranta_excellence' => 'Keunggulan Niranta',
+    'card1_title' => '100% Alami dan Organik',
+    'card1_text' => 'Terbuat dari nira aren organik tanpa bahan kimia, pemanis buatan, pewarna, atau pengawet.',
+    'card2_title' => 'Kemitraan dengan Petani Terlatih',
+    'card2_text' => 'Bekerja langsung dengan petani lokal yang telah dilatih dengan metode pertanian berkelanjutan.',
+    'card3_title' => 'Sehat dan Aman untuk Dikonsumsi',
+    'card3_text' => 'Indeks glikemik rendah dan kaya mineral alami yang baik untuk tubuh.',
+    'card4_title' => 'Produksi Bersih dan Terkontrol',
+    'card4_text' => 'Setiap langkah proses mengikuti standar kebersihan ketat untuk memastikan kualitas dan keamanan.',
+    'card5_title' => '100% Alami dan Organik',
+    'card5_text' => 'Terbuat dari nira aren organik tanpa bahan kimia, pemanis buatan, pewarna, atau pengawet.',
 
     // Common
     'search' => 'Cari',

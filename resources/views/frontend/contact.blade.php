@@ -15,20 +15,19 @@
     /* Hero Section */
     .hero-section {
         height: 70vh;
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('latarproduk.png') }}');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: hidden;
+        background-color: #F2ECE0;
     }
 
     .hero-content {
         text-align: center;
         color: white;
-        z-index: 2;
+        z-index: 10;
+        position: relative;
     }
 
     .hero-content h1 {
@@ -37,6 +36,32 @@
         margin-bottom: 20px;
         text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
         letter-spacing: 2px;
+    }
+
+    /* Contact Hero Video Background */
+    #contactHeroVideo {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        z-index: 1 !important;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    /* Video loading state */
+    #contactHeroVideo[data-loaded="true"] {
+        opacity: 1;
+    }
+    
+    /* Responsive video handling */
+    @media (max-width: 768px) {
+        #contactHeroVideo {
+            object-position: center center !important;
+            transform: scale(1.02);
+        }
     }
 
     /* Main Content */
@@ -208,96 +233,27 @@
 
 <!-- Hero Section -->
 <section class="hero-section">
-    <div class="hero-content">
-        <h1>Contact Us</h1>
+    <!-- Background Video Container -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden" style="z-index: 1;">
+        <video 
+            id="contactHeroVideo"
+            autoplay 
+            loop 
+            muted 
+            playsinline
+            preload="auto"
+            class="w-full h-full object-cover"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+        >
+            <source src="{{ asset('vidniranta.mp4') }}" type="video/mp4">
+        </video>
     </div>
-</section>
-
-<!-- About Us Section -->
-<section style="
-    background-color: #F2ECE0;
-    padding: 80px 0;
-">
-    <div class="about-us-grid" style="
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 40px;
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 60px;
-        align-items: center;
-    ">
-        <!-- Left Side - Image -->
-        <div class="about-us-image" style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        ">
-            <img src="{{ asset('more.png') }}" alt="Niranta Palm Sugar Package" style="
-                width: 100%;
-                max-width: 350px;
-                height: auto;
-            ">
-        </div>
-
-        <!-- Right Side - Content -->
-        <div class="about-us-content" style="
-            padding: 20px 0;
-        ">
-            <h2 style="
-                font-family: 'Poppins', sans-serif;
-                font-size: 2.5rem;
-                font-weight: 700;
-                color: #000000;
-                margin-bottom: 30px;
-                line-height: 1.2;
-            ">About Us</h2>
-            
-            <div style="
-                color: #000000;
-                font-size: 16px;
-                line-height: 100%;
-                margin-bottom: 35px;
-                font-family: 'Inter', sans-serif;
-                font-weight: 400;
-                letter-spacing: 0%;
-            ">
-                <p style="margin-bottom: 20px;">
-                    Founded in Padang in 2015, Niranta began as a large-scale distributor of solid palm sugar. 
-                    As market demand continued to evolve, Niranta responded with ongoing innovation and product development.
-                </p>
-                
-                <p style="margin-bottom: 0;">
-                    In 2019, we introduced palm sugar powder—a more convenient option now available in supermarkets, 
-                    through reseller networks, and on digital platforms. With consistent quality and trend adaptation, 
-                    Niranta is recognized as one of the producers bringing authentic local flavors to the global stage.
-                </p>
-            </div>
-            
-            <button style="
-                background-color: #482500;
-                color: white;
-                border: none;
-                border-radius: 25px;
-                padding: 12px 30px;
-                font-size: 1rem;
-                font-weight: 600;
-                font-family: 'Poppins', sans-serif;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 8px 20px rgba(72, 37, 0, 0.3);
-            " onmouseover="
-                this.style.transform='translateY(-2px)';
-                this.style.boxShadow='0 12px 25px rgba(72, 37, 0, 0.4)';
-                this.style.backgroundColor='#3a1d00';
-            " onmouseout="
-                this.style.transform='translateY(0)';
-                this.style.boxShadow='0 8px 20px rgba(72, 37, 0, 0.3)';
-                this.style.backgroundColor='#482500';
-            ">
-                Lihat selengkapnya
-            </button>
-        </div>
+    
+    <!-- Dark overlay for better text readability -->
+    <div class="absolute inset-0 w-full h-full" style="z-index: 2; background: rgba(0, 0, 0, 0.5);"></div>
+    
+    <div class="hero-content">
+        <h1>{{ __('messages.contact.title') }}</h1>
     </div>
 </section>
 
@@ -306,8 +262,8 @@
     <div class="container">
         <!-- Help Section -->
         <div class="help-section">
-            <h2>Butuh Bantuan?</h2>
-            <p>Dengan senang hati tim kami akan membantu menyelesaikan kendala anda. Hubungi kami melalui informasi kontak dibawah ini</p>
+            <h2>{{ __('messages.contact.help_title') }}</h2>
+            <p>{{ __('messages.contact.help_description') }}</p>
         </div>
 
         <!-- Contact Info -->
@@ -315,19 +271,18 @@
             <!-- Address -->
             <div class="contact-item">
                 <img src="{{ asset('iconhome.png') }}" alt="Address Icon" class="contact-icon">
-                <h3>Address</h3>
+                <h3>{{ __('messages.contact.address') }}</h3>
                 <p>
-                    <strong>Jl. Terandam III No.35, Sawahan, Kec. Padang Timur</strong>
-                    Kota Padang, Sumatera Barat, Indonesia 25121
+                    <strong>{{ __('messages.contact.address_detail') }}</strong>
                 </p>
             </div>
 
             <!-- Email -->
             <div class="contact-item">
                 <img src="{{ asset('iconemail.png') }}" alt="Email Icon" class="contact-icon">
-                <h3>Email Us</h3>
+                <h3>{{ __('messages.contact.email_us') }}</h3>
                 <p>
-                    <strong>Hubungi kami melalui email</strong>
+                    <strong>{{ __('messages.contact.email_text') }}</strong>
                  niraku.pdg@gmail.com
                 </p>
             </div>
@@ -335,9 +290,9 @@
             <!-- Phone -->
             <div class="contact-item">
                 <img src="{{ asset('icontelpon.png') }}" alt="Phone Icon" class="contact-icon">
-                <h3>Call Us</h3>
+                <h3>{{ __('messages.contact.call_us') }}</h3>
                 <p>
-                    <strong>Hubungi kami melalui telepon</strong>
+                    <strong>{{ __('messages.contact.phone_text') }}</strong>
                     +62 812 6768 106
                 </p>
             </div>
@@ -351,4 +306,62 @@
         </div>
     </div>
 </section>
+
+<script>
+    // Contact hero video background functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        // Contact hero background video
+        const contactVideo = document.getElementById('contactHeroVideo');
+        const contactContainer = contactVideo ? contactVideo.closest('.hero-section') : null;
+        
+        if (contactVideo && contactContainer) {
+            console.log('Initializing contact hero video background...');
+            
+            // Set video properties
+            contactVideo.muted = true;
+            contactVideo.playsInline = true;
+            contactVideo.loop = true;
+            contactVideo.autoplay = true;
+            contactVideo.preload = 'auto';
+            
+            // Handle video events
+            contactVideo.addEventListener('loadstart', function() {
+                console.log('Contact video loading started');
+            });
+            
+            contactVideo.addEventListener('loadeddata', function() {
+                console.log('Contact video data loaded successfully');
+                contactVideo.style.opacity = '1';
+            });
+            
+            contactVideo.addEventListener('canplay', function() {
+                console.log('Contact video can play');
+                const playPromise = contactVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        console.log('Contact video playing successfully');
+                    }).catch(function(error) {
+                        console.error('Contact video play failed:', error);
+                    });
+                }
+            });
+            
+            contactVideo.addEventListener('error', function(e) {
+                console.error('Contact video error:', e);
+            });
+            
+            // Force load after timeout
+            setTimeout(() => {
+                if (contactVideo.readyState < 2) {
+                    console.log('Contact video not loaded after 3 seconds, trying alternative approach...');
+                    contactVideo.src = '{{ asset("vidniranta.mp4") }}';
+                    contactVideo.load();
+                }
+            }, 3000);
+        } else {
+            console.error('Contact hero video element not found');
+        }
+    });
+</script>
+
 @endsection

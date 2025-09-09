@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #f0f0f0;
+            margin: 20px 0;
+            border: 2px solid #ccc;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-left: 4px solid #007cba;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Video Test - vidniranta.mp4</h1>
+        
+        <div id="status" class="status">
+            Testing video file...
+        </div>
+        
+        <div class="video-container">
+            <video id="testVideo" controls muted>
+                <source src="vidniranta.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        
+        <div id="details" class="status">
+            <h3>Video Details:</h3>
+            <ul id="videoInfo">
+                <li>Loading...</li>
+            </ul>
+        </div>
+        
+        <button onclick="testAutoplay()">Test Autoplay</button>
+        <button onclick="checkVideoFile()">Check File Access</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('testVideo');
+        const status = document.getElementById('status');
+        const videoInfo = document.getElementById('videoInfo');
+        
+        // Test video loading
+        video.addEventListener('loadstart', () => {
+            updateStatus('Video loading started...', 'status');
+        });
+        
+        video.addEventListener('loadedmetadata', () => {
+            updateStatus('Video metadata loaded successfully!', 'success');
+            updateVideoInfo();
+        });
+        
+        video.addEventListener('loadeddata', () => {
+            updateStatus('Video data loaded successfully!', 'success');
+        });
+        
+        video.addEventListener('canplay', () => {
+            updateStatus('Video can play - ready for playback!', 'success');
+        });
+        
+        video.addEventListener('error', (e) => {
+            updateStatus('Video failed to load: ' + e.message, 'error');
+            console.error('Video error:', e);
+        });
+        
+        function updateStatus(message, type) {
+            status.textContent = message;
+            status.className = 'status ' + type;
+        }
+        
+        function updateVideoInfo() {
+            const info = [
+                `Duration: ${video.duration ? video.duration.toFixed(2) + 's' : 'Unknown'}`,
+                `Width: ${video.videoWidth || 'Unknown'}`,
+                `Height: ${video.videoHeight || 'Unknown'}`,
+                `Ready State: ${video.readyState}`,
+                `Network State: ${video.networkState}`,
+                `Current Source: ${video.currentSrc || 'None'}`
+            ];
+            
+            videoInfo.innerHTML = info.map(item => `<li>${item}</li>`).join('');
+        }
+        
+        function testAutoplay() {
+            video.muted = true;
+            video.autoplay = true;
+            const playPromise = video.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    updateStatus('Autoplay successful!', 'success');
+                }).catch((error) => {
+                    updateStatus('Autoplay failed: ' + error.message, 'error');
+                    console.error('Autoplay error:', error);
+                });
+            }
+        }
+        
+        function checkVideoFile() {
+            fetch('vidniranta.mp4', { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        updateStatus(`File accessible! Size: ${response.headers.get('content-length')} bytes`, 'success');
+                    } else {
+                        updateStatus(`File not accessible! Status: ${response.status}`, 'error');
+                    }
+                })
+                .catch(error => {
+                    updateStatus('File check failed: ' + error.message, 'error');
+                });
+        }
+        
+        // Auto-run file check on load
+        setTimeout(checkVideoFile, 1000);
+    </script>
+</body>
+</html>
+

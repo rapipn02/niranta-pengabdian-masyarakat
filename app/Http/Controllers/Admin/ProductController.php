@@ -37,7 +37,7 @@ class ProductController extends Controller
             'nama_produk' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
             'link_produk' => 'nullable|url',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
@@ -123,7 +123,7 @@ class ProductController extends Controller
             'nama_produk' => 'required|string|max:255',
             'harga' => 'required|numeric|min:0',
             'link_produk' => 'nullable|url',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
 
         if ($request->hasFile('image')) {

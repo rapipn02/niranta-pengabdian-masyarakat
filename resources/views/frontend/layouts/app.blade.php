@@ -52,7 +52,7 @@
 <body class="font-inter antialiased bg-white">
     <div class="min-h-screen">
         <!-- Navigation -->
-        @if(!request()->routeIs('recipe.detail') && !request()->routeIs('blog.detail'))
+        @if(!request()->routeIs('recipe.detail'))
             @include('frontend.partials.navbar')
         @endif
 

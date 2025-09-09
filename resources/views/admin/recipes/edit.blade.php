@@ -168,6 +168,7 @@
         
         <!-- Image Upload -->
         <div class="form-group">
+            <label class="form-label">Upload Foto (untuk resep list & blog)</label>
             <div class="upload-area" id="upload-area">
                 @if($recipe->image && file_exists(public_path($recipe->image)))
                     <img src="{{ asset($recipe->image) }}" alt="Current Image" class="current-image" id="current-image">
@@ -182,6 +183,29 @@
             </div>
             <input type="file" name="image" id="image-input" accept="image/*" style="display: none;">
             @error('image')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Video Upload -->
+        <div class="form-group">
+            <label class="form-label">Upload Video (opsional - untuk detail resep)</label>
+            <div class="upload-area" id="video-upload-area">
+                @if($recipe->video && file_exists(public_path($recipe->video)))
+                    <video src="{{ asset($recipe->video) }}" class="current-image" id="current-video" controls style="max-height: 150px;">
+                        Your browser does not support the video tag.
+                    </video>
+                    <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                        Click to change
+                    </div>
+                @else
+                    <div class="upload-icon">🎥</div>
+                    <div class="upload-text">Click to upload video or drag and drop</div>
+                    <div style="font-size: 12px; color: #999; margin-top: 5px;">MP4, MOV up to 10MB</div>
+                @endif
+            </div>
+            <input type="file" name="video" id="video-input" accept="video/*" style="display: none;">
+            @error('video')
                 <div class="error-message">{{ $message }}</div>
             @enderror
         </div>
@@ -241,19 +265,35 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const uploadArea = document.getElementById('upload-area');
+    const videoUploadArea = document.getElementById('video-upload-area');
     const imageInput = document.getElementById('image-input');
+    const videoInput = document.getElementById('video-input');
     const currentImage = document.getElementById('current-image');
+    const currentVideo = document.getElementById('current-video');
 
-    // Click to upload
+    // Click to upload image
     uploadArea.addEventListener('click', function() {
         imageInput.click();
     });
 
-    // Handle file selection
+    // Click to upload video
+    videoUploadArea.addEventListener('click', function() {
+        videoInput.click();
+    });
+
+    // Handle file selection for image
     imageInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
             displayPreview(file);
+        }
+    });
+
+    // Handle file selection for video
+    videoInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            displayVideoPreview(file);
         }
     });
 
@@ -286,11 +326,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Video drag and drop functionality
+    videoUploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        videoUploadArea.classList.add('dragover');
+    });
+
+    videoUploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        videoUploadArea.classList.remove('dragover');
+    });
+
+    videoUploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        videoUploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            const file = files[0];
+            if (file.type.startsWith('video/')) {
+                // Create a new FileList-like object
+                const dt = new DataTransfer();
+                dt.items.add(file);
+                videoInput.files = dt.files;
+                displayVideoPreview(file);
+            }
+        }
+    });
+
     function displayPreview(file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             uploadArea.innerHTML = `
                 <img src="${e.target.result}" alt="Preview" class="current-image">
+                <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
+                    Click to change
+                </div>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function displayVideoPreview(file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            videoUploadArea.innerHTML = `
+                <video src="${e.target.result}" class="current-image" controls style="max-height: 150px;">
+                    Your browser does not support the video tag.
+                </video>
                 <div style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">
                     Click to change
                 </div>

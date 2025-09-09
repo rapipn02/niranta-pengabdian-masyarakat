@@ -284,6 +284,10 @@
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z'/%3E%3C/svg%3E");
     }
 
+    .nav-item[href*="statistics"]:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V18H22V21Z'/%3E%3C/svg%3E");
+    }
+
     .nav-item[href*="products"]:before {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E");
     }
@@ -319,6 +323,10 @@
 
     .nav-item.active:before {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23482500' viewBox='0 0 24 24'%3E%3Cpath d='M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z'/%3E%3C/svg%3E");
+    }
+
+    .nav-item.active[href*="statistics"]:before {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23482500' viewBox='0 0 24 24'%3E%3Cpath d='M22,21H2V3H4V19H6V17H10V19H12V16H16V19H18V18H22V21Z'/%3E%3C/svg%3E");
     }
 
     .nav-item.active[href*="products"]:before {
@@ -478,6 +486,9 @@
     <nav class="nav-menu">
         <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
             <span class="nav-text">Dashboard</span>
+        </a>
+        <a href="{{ route('admin.statistics') }}" class="nav-item {{ request()->routeIs('admin.statistics') ? 'active' : '' }}">
+            <span class="nav-text">Statistics</span>
         </a>
         <a href="{{ route('admin.products') }}" class="nav-item {{ request()->routeIs('admin.products') ? 'active' : '' }}">
             <span class="nav-text">Products</span>

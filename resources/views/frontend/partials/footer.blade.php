@@ -196,6 +196,14 @@
                         font-size: 14px;
                         font-weight: 500;
                     " id="language-text">{{ __('messages.footer.language') }}</span>
+                    <!-- Dropdown Arrow -->
+                    <img src="{{ asset('panah.png') }}" alt="Dropdown Arrow" style="
+                        width: 12px;
+                        height: auto;
+                        margin-left: 4px;
+                        transition: transform 0.3s ease;
+                        filter: brightness(0) invert(1);
+                    " />
                 </div>
             </div>
         </div>

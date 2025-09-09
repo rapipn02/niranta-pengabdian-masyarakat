@@ -98,27 +98,70 @@
                     ">{{ $recipe->getTranslatedDescription() }}</p>
                 </div>
 
-                <!-- Recipe Image -->
+                <!-- Recipe Media (Video or Image) -->
                 <div style="
                     position: relative;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    @if($recipe->image)
-                        background-image: url('{{ recipe_image($recipe->image) }}');
-                    @else
-                        background-image: url('{{ recipe_image('placeholder-recipe.jpg') }}');
+                    @if(!$recipe->video)
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        @if($recipe->image)
+                            background-image: url('{{ recipe_image($recipe->image) }}');
+                        @else
+                            background-image: url('{{ recipe_image('placeholder-recipe.jpg') }}');
+                        @endif
                     @endif
                 ">
-                    <!-- Overlay with pattern -->
-                    <div style="
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-                        background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(193, 154, 95, 0.2) 100%);
-                    "></div>
+                    @if($recipe->video && recipe_video($recipe->video))
+                        <!-- Video Display -->
+                        <video 
+                            style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                border-radius: 0;
+                            "
+                            controls
+                            preload="metadata"
+                            poster="@if($recipe->image){{ recipe_image($recipe->image) }}@else{{ recipe_image('placeholder-recipe.jpg') }}@endif"
+                        >
+                            <source src="{{ recipe_video($recipe->video) }}" type="video/mp4">
+                            <source src="{{ recipe_video($recipe->video) }}" type="video/mov">
+                            <source src="{{ recipe_video($recipe->video) }}" type="video/avi">
+                            Your browser does not support the video tag.
+                            <!-- Fallback to image if video fails -->
+                            <img src="@if($recipe->image){{ recipe_image($recipe->image) }}@else{{ recipe_image('placeholder-recipe.jpg') }}@endif" 
+                                 alt="{{ $recipe->getTranslatedName() }}" 
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </video>
+                        
+                        <!-- Video Overlay for Better UI -->
+                        <div style="
+                            position: absolute;
+                            bottom: 20px;
+                            right: 20px;
+                            background: rgba(0, 0, 0, 0.7);
+                            color: white;
+                            padding: 8px 15px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            font-weight: 500;
+                            backdrop-filter: blur(10px);
+                        ">
+                            🎥 Recipe Video
+                        </div>
+                    @else
+                        <!-- Image Display (Fallback) -->
+                        <!-- Overlay with pattern -->
+                        <div style="
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            bottom: 0;
+                            left: 0;
+                            background: linear-gradient(135deg, rgba(212, 165, 116, 0.1) 0%, rgba(193, 154, 95, 0.2) 100%);
+                        "></div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -682,8 +725,27 @@
         
         /* Make sure image is visible and properly sized on mobile */
         .recipe-header > div:last-child {
-            height: 250px !important;
+            height: 350px !important; /* Increased height for portrait video */
             margin-bottom: 0 !important;
+        }
+        
+        /* Video specific styling for mobile portrait */
+        .recipe-header > div:last-child video {
+            height: 100% !important;
+            width: auto !important;
+            max-width: 100% !important;
+            object-fit: contain !important; /* Changed from cover to contain for portrait */
+            object-position: center !important;
+            border-radius: 0 !important;
+        }
+        
+        /* Video overlay positioning for mobile */
+        .recipe-header > div:last-child > div:last-child {
+            bottom: 10px !important;
+            right: 10px !important;
+            padding: 6px 12px !important;
+            font-size: 10px !important;
+            border-radius: 15px !important;
         }
         
         .recipe-header > div:first-child h1 {
@@ -726,9 +788,27 @@
             padding: 20px !important;
         }
         
-        /* Ensure image is visible on small mobile too */
+        /* Ensure image/video is visible on small mobile too */
         .recipe-header > div:last-child {
-            height: 200px !important;
+            height: 300px !important; /* Increased for portrait video */
+        }
+        
+        /* Video specific styling for small mobile */
+        .recipe-header > div:last-child video {
+            height: 100% !important;
+            width: auto !important;
+            max-width: 100% !important;
+            object-fit: contain !important;
+            object-position: center !important;
+        }
+        
+        /* Smaller video overlay for small mobile */
+        .recipe-header > div:last-child > div:last-child {
+            bottom: 8px !important;
+            right: 8px !important;
+            padding: 4px 8px !important;
+            font-size: 9px !important;
+            border-radius: 10px !important;
         }
         
         .recipe-header > div:first-child h1 {
@@ -860,6 +940,52 @@
             animation-duration: 0.01ms !important;
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
+        }
+    }
+    
+    /* Portrait Orientation Specific Styles for Mobile */
+    @media (max-width: 767px) and (orientation: portrait) {
+        /* Optimize video container for portrait */
+        .recipe-header > div:last-child {
+            height: 400px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: #000 !important;
+        }
+        
+        .recipe-header > div:last-child video {
+            height: 100% !important;
+            width: auto !important;
+            max-width: 100% !important;
+            object-fit: contain !important;
+            object-position: center !important;
+            background: #000 !important;
+        }
+    }
+    
+    /* Landscape Orientation for Mobile - Keep video wider */
+    @media (max-width: 767px) and (orientation: landscape) {
+        .recipe-header > div:last-child {
+            height: 250px !important;
+        }
+        
+        .recipe-header > div:last-child video {
+            height: 100% !important;
+            width: 100% !important;
+            object-fit: cover !important;
+            object-position: center !important;
+        }
+    }
+    
+    /* Very small screens - ensure good video experience */
+    @media (max-width: 480px) and (orientation: portrait) {
+        .recipe-header > div:last-child {
+            height: 350px !important;
+        }
+        
+        .recipe-header > div:last-child video {
+            border-radius: 0 !important;
         }
     }
 </style>

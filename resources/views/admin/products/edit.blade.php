@@ -203,7 +203,7 @@
                     <div class="upload-text">Click to upload product image</div>
                 @endif
             </div>
-            <input type="file" id="imageInput" name="image" accept="image/*" style="display: none;">
+            <input type="file" id="imageInput" name="image" accept="image/jpeg,image/png,image/jpg,image/gif,image/webp" style="display: none;">
             @error('image')
                 <div class="error-message">{{ $message }}</div>
             @enderror

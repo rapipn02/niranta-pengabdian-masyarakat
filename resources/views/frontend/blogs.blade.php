@@ -81,11 +81,7 @@
                         <div style="
                             width: 100%;
                             height: 180px;
-                            @if($blog->image)
-                                background-image: url('{{ blog_image($blog->image) }}');
-                            @else
-                                background-image: url('{{ blog_image('placeholder-blog.jpg') }}');
-                            @endif
+                            background-image: url('{{ blog_image($blog->image) }}');
                             background-size: cover;
                             background-position: center;
                             flex-shrink: 0;

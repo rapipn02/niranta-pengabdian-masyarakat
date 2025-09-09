@@ -34,6 +34,17 @@ class RecipeController extends Controller
      */
     public function store(Request $request)
     {
+        // Debug: Log request data
+        \Log::info('Recipe Store - Request Data:', [
+            'has_video_file' => $request->hasFile('video'),
+            'video_file_info' => $request->hasFile('video') ? [
+                'name' => $request->file('video')->getClientOriginalName(),
+                'size' => $request->file('video')->getSize(),
+                'mime' => $request->file('video')->getMimeType(),
+            ] : null,
+            'all_files' => $request->allFiles(),
+        ]);
+
         $validated = $request->validate([
             'nama_resep' => 'required|string|max:255',
             'jenis' => 'required|in:drink,dessert',
@@ -41,6 +52,7 @@ class RecipeController extends Controller
             'bahan' => 'required|string',
             'cara_membuat' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:10240', // 10MB max
         ]);
 
         // Convert textarea to array (split by new lines)
@@ -63,9 +75,46 @@ class RecipeController extends Controller
             $validated['image'] = 'images/recipes/' . $imageName;
         }
 
+        if ($request->hasFile('video')) {
+            \Log::info('Recipe Store - Processing video upload');
+            
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/videos/recipes');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+                \Log::info('Recipe Store - Created video directory: ' . $storageDir);
+            }
+            
+            // Generate filename
+            $video = $request->file('video');
+            $videoName = 'recipe_video_' . time() . '.' . $video->getClientOriginalExtension();
+            
+            \Log::info('Recipe Store - Video upload details:', [
+                'original_name' => $video->getClientOriginalName(),
+                'new_name' => $videoName,
+                'size' => $video->getSize(),
+                'storage_dir' => $storageDir,
+            ]);
+            
+            // Move file to storage with exact name
+            $video->move($storageDir, $videoName);
+            $validated['video'] = 'videos/recipes/' . $videoName;
+            
+            \Log::info('Recipe Store - Video uploaded successfully: ' . $validated['video']);
+        } else {
+            \Log::info('Recipe Store - No video file uploaded');
+        }
+
+        \Log::info('Recipe Store - Final validated data:', $validated);
+        
         Recipe::create($validated);
 
         $recipe = Recipe::latest()->first();
+        
+        \Log::info('Recipe Store - Created recipe:', [
+            'id' => $recipe->id,
+            'video' => $recipe->video,
+        ]);
 
         // Auto translate ke bahasa Inggris
         $this->createTranslation($recipe);
@@ -95,6 +144,7 @@ class RecipeController extends Controller
             'bahan' => 'required|string',
             'cara_membuat' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video' => 'nullable|mimes:mp4,mov,avi,wmv|max:10240', // 10MB max
         ]);
 
         // Convert textarea to array (split by new lines)
@@ -123,6 +173,30 @@ class RecipeController extends Controller
             // Move file to storage with exact name
             $image->move($storageDir, $imageName);
             $validated['image'] = 'images/recipes/' . $imageName;
+        }
+
+        if ($request->hasFile('video')) {
+            // Delete old video from storage
+            if ($recipe->video) {
+                $oldVideoPath = storage_path('app/public/' . $recipe->video);
+                if (file_exists($oldVideoPath)) {
+                    unlink($oldVideoPath);
+                }
+            }
+            
+            // Create directory if not exists
+            $storageDir = storage_path('app/public/videos/recipes');
+            if (!file_exists($storageDir)) {
+                mkdir($storageDir, 0755, true);
+            }
+            
+            // Generate filename
+            $video = $request->file('video');
+            $videoName = 'recipe_video_' . time() . '.' . $video->getClientOriginalExtension();
+            
+            // Move file to storage with exact name
+            $video->move($storageDir, $videoName);
+            $validated['video'] = 'videos/recipes/' . $videoName;
         }
 
         $recipe->update($validated);

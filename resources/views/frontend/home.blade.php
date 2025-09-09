@@ -7,15 +7,35 @@
 @include('frontend.partials.navbar')
 
 <!-- Hero Section -->
-<div class="relative min-h-screen bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('home.png') }}'); padding-top: 80px;">
+<div class="hero-section relative min-h-screen" style="padding-top: 80px; background-color: #F2ECE0;">
+    <!-- Background Video Container -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden" style="z-index: 1;">
+        <video 
+            id="heroBackgroundVideo"
+            autoplay 
+            loop 
+            muted 
+            playsinline
+            preload="auto"
+            class="w-full h-full object-cover"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+        >
+            <source src="{{ asset('vidniranta.mp4') }}" type="video/mp4">
+        </video>
+    </div>
+    
+    <!-- Dark overlay for better text readability -->
+    <div class="absolute inset-0 w-full h-full" style="z-index: 2; background: rgba(0, 0, 0, 0.4);"></div>
+    
     <!-- Content -->
-    <div class="relative z-10 flex items-center justify-center min-h-screen px-4" style="min-height: calc(100vh - 80px);">
-        <div class="text-center text-white max-w-4xl mx-auto">
+    <div class="relative flex items-center justify-center min-h-screen px-4" style="min-height: calc(100vh - 80px); z-index: 10;">
+        <div class="text-center max-w-4xl mx-auto" style="color: #FFFFFF;">
             <!-- Main Heading -->
             <h1 class="hero-title mb-4 leading-none tracking-tight" style="
                 font-size: clamp(2.5rem, 8vw, 9rem);
                 font-weight: 800;
                 font-family: 'Inter', sans-serif;
+                color: #FFFFFF;
                 text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
                 letter-spacing: -0.02em;
                 line-height: 0.9;
@@ -25,13 +45,15 @@
             
             <!-- Subheading -->
             <div class="flex flex-col items-center justify-center hero-subtitle" style="gap: clamp(20px, 5vw, 61px); margin-top: clamp(20px, 4vw, 40px);">
-                <span class="block text-[#F2ECE0] tracking-wide" style="
-                    text-shadow: 0 2px 8px rgba(72,37,0,0.18); 
+                <span class="block tracking-wide" style="
+                    color: #FFFFFF;
+                    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
                     font-family: 'Inter', sans-serif; 
                     font-weight: 400; 
                     font-size: clamp(1rem, 3vw, 1.5rem); 
                     line-height: 1.5; 
                     margin: 0 auto;
+                    opacity: 0.9;
                 ">{{ __('messages.home.hero_subtitle') }}</span>
                 <a
                     href="{{ route('product') }}"
@@ -211,10 +233,53 @@
                     font-style: normal;
                     font-weight: 400;
                     line-height: 1.4;
-                    margin: 0;
+                    margin: 0 0 clamp(20px, 4vw, 30px) 0;
                 ">
                     {{ __('frontend.our_history_text') }}
                 </p>
+                
+                <!-- See More Button -->
+                <a href="{{ asset('profil.pdf') }}" download="Niranta-Company-Profile.pdf" style="
+                    display: inline-flex;
+                    align-items: center;
+                    background-color: #F2ECE0;
+                    color: #482500;
+                    text-decoration: none;
+                    padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 30px);
+                    border-radius: 25px;
+                    font-family: 'Poppins', sans-serif;
+                    font-size: clamp(12px, 2.5vw, 16px);
+                    font-weight: 700;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    gap: clamp(6px, 1.5vw, 8px);
+                    cursor: pointer;
+                " onmouseover="
+                    this.style.transform='translateY(-2px)';
+                    this.style.boxShadow='0 6px 20px rgba(0, 0, 0, 0.15)';
+                    this.style.backgroundColor='#EAE5DD';
+                " onmouseout="
+                    this.style.transform='translateY(0)';
+                    this.style.boxShadow='0 4px 15px rgba(0, 0, 0, 0.1)';
+                    this.style.backgroundColor='#F2ECE0';
+                " onclick="
+                    // Fallback untuk hosting dengan JavaScript
+                    setTimeout(() => {
+                        const link = document.createElement('a');
+                        link.href = '{{ asset('profil.pdf') }}';
+                        link.download = 'Niranta-Company-Profile.pdf';
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }, 100);
+                ">
+                    <span>{{ __('frontend.see_more') }}</span>
+                    <svg width="clamp(16px, 3vw, 20px)" height="clamp(16px, 3vw, 20px)" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13.75 6.75L19.25 12L13.75 17.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 12H4.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
             </div>
             
             <!-- Product Image Overlay - Responsive -->
@@ -485,110 +550,7 @@
     </div>
 </section>
 
-<!-- Video Profile Section -->
-<section class="video-profile-section" style="
-    background-color: #F2ECE0;
-    padding: clamp(40px, 8vw, 80px) 0;
-    margin: 0;
-    width: 100%;
-">
-    <div class="video-container" style="
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 clamp(20px, 5vw, 40px);
-        text-align: center;
-    ">
-        <!-- Section Title -->
-        <h2 style="
-            color: #000;
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(28px, 6vw, 42px);
-            font-style: normal;
-            font-weight: 900;
-            line-height: 1.2;
-            margin-bottom: clamp(20px, 4vw, 30px);
-        ">Company Profile</h2>
-        
-        <!-- Video Player -->
-        <div class="video-wrapper" style="
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(72, 37, 0, 0.15);
-            background: #000;
-        ">
-            <video 
-                id="companyProfileVideo"
-                controls 
-                muted
-                preload="metadata"
-                style="
-                    width: 100%;
-                    height: auto;
-                    display: block;
-                    border-radius: 20px;
-                "
-                poster="{{ asset('home.png') }}"
-            >
-                <source src="{{ asset('vidprofil.mp4') }}" type="video/mp4">
-                <p style="
-                    color: #482500;
-                    font-family: 'Inter', sans-serif;
-                    font-size: 16px;
-                    padding: 20px;
-                ">
-                    Your browser does not support the video tag. 
-                    <a href="{{ asset('vidprofil.mp4') }}" style="color: #482500; text-decoration: underline;">
-                        Download the video here
-                    </a>
-                </p>
-            </video>
-            
-            <!-- Play/Pause Indicator -->
-            <div id="videoPlayIndicator" style="
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(0, 0, 0, 0.7);
-                border-radius: 50%;
-                width: 60px;
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-                pointer-events: none;
-                z-index: 10;
-            ">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-            </div>
-        </div>
-        
-        <!-- Video Description -->
-        <p style="
-            color: #000;
-            font-family: 'Inter', sans-serif;
-            font-size: clamp(14px, 3vw, 18px);
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.5;
-            margin-top: clamp(20px, 4vw, 30px);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.8;
-        ">
-            Discover the story behind Niranta Palm Sugar and our commitment to providing natural, high-quality products for your healthy lifestyle.
-        </p>
-    </div>
-</section>
+
 
 <!-- Custom Styles -->
 <style>
@@ -651,6 +613,49 @@
     }
 
     /* Mobile First Responsive Design */
+    
+    /* Hero Video Background */
+    #heroBackgroundVideo {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        z-index: 1 !important;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+    
+    /* Ensure video is properly sized */
+    .hero-video-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: 1;
+    }
+    
+    /* Video loading state */
+    #heroBackgroundVideo[data-loaded="true"] {
+        opacity: 1;
+    }
+    
+    /* Responsive video handling */
+    @media (max-width: 768px) {
+        #heroBackgroundVideo {
+            object-position: center center !important;
+            transform: scale(1.02); /* Slight scale to avoid black bars on mobile */
+        }
+    }
+    
+    /* Ensure video container doesn't overflow */
+    .hero-section {
+        position: relative;
+        overflow: hidden;
+    }
     
     /* Video Profile Section Responsive */
     .video-wrapper {
@@ -939,131 +944,126 @@
 </style>
 
 <script>
-    // Video autoplay on scroll functionality
+    // Hero video background functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const video = document.getElementById('companyProfileVideo');
-        const playIndicator = document.getElementById('videoPlayIndicator');
-        let hasPlayedOnce = false;
+        // Hero background video
+        const heroVideo = document.getElementById('heroBackgroundVideo');
+        const heroContainer = heroVideo ? heroVideo.closest('.relative.min-h-screen') : null;
         
-        // Video caching - preload video when page loads
-        function preloadVideo() {
-            if (video) {
-                video.preload = 'auto';
-                // Force load the video metadata
-                video.load();
-            }
-        }
-        
-        // Intersection Observer for autoplay on scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.5 // Video needs to be 50% visible
-        };
-        
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting && !hasPlayedOnce) {
-                    // Auto play when video comes into view
-                    video.muted = true; // Ensure it's muted for autoplay
-                    video.play().then(() => {
-                        hasPlayedOnce = true;
-                        showPlayIndicator();
-                    }).catch((error) => {
-                        console.log('Autoplay prevented:', error);
-                    });
-                }
-            });
-        }, observerOptions);
-        
-        // Observe the video element
-        if (video) {
-            videoObserver.observe(video);
-        }
-        
-        // Show play indicator
-        function showPlayIndicator() {
-            if (playIndicator) {
-                playIndicator.style.opacity = '1';
-                setTimeout(() => {
-                    playIndicator.style.opacity = '0';
-                }, 1500);
-            }
-        }
-        
-        // Video event listeners
-        if (video) {
-            // Show/hide play indicator on play/pause
-            video.addEventListener('play', () => {
-                showPlayIndicator();
-            });
+        if (heroVideo && heroContainer) {
+            console.log('Initializing hero video background...');
             
-            video.addEventListener('pause', () => {
-                if (playIndicator) {
-                    const pauseIcon = playIndicator.querySelector('svg');
-                    pauseIcon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-                    playIndicator.style.opacity = '1';
-                    setTimeout(() => {
-                        playIndicator.style.opacity = '0';
-                        // Reset to play icon
-                        pauseIcon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                    }, 1500);
-                }
-            });
+            // Set video properties
+            heroVideo.muted = true;
+            heroVideo.playsInline = true;
+            heroVideo.loop = true;
+            heroVideo.autoplay = true;
+            heroVideo.preload = 'auto';
             
-            // Lazy load video when user interacts
-            video.addEventListener('click', () => {
-                if (video.paused) {
-                    video.play();
-                } else {
-                    video.pause();
-                }
-            });
+            // Add loading indicator
+            heroContainer.style.position = 'relative';
             
-            // Progressive loading for better performance
-            video.addEventListener('loadstart', () => {
+            // Handle video events
+            heroVideo.addEventListener('loadstart', function() {
                 console.log('Video loading started');
             });
             
-            video.addEventListener('loadeddata', () => {
-                console.log('Video data loaded');
+            heroVideo.addEventListener('loadedmetadata', function() {
+                console.log('Video metadata loaded');
             });
             
-            video.addEventListener('canplaythrough', () => {
-                console.log('Video can play through');
+            heroVideo.addEventListener('loadeddata', function() {
+                console.log('Video data loaded successfully');
+                heroVideo.style.opacity = '1';
             });
-        }
-        
-        // Initialize video preloading
-        preloadVideo();
-        
-        // Cache video in browser storage for faster subsequent loads
-        if ('serviceWorker' in navigator) {
-            // Register service worker for video caching
-            navigator.serviceWorker.register('/sw.js').then((registration) => {
-                console.log('Service Worker registered for video caching');
-            }).catch((error) => {
-                console.log('Service Worker registration failed');
-            });
-        }
-        
-        // Local storage caching for video preferences
-        const videoPrefs = {
-            muted: localStorage.getItem('niranta_video_muted') === 'true',
-            volume: parseFloat(localStorage.getItem('niranta_video_volume')) || 0.5
-        };
-        
-        // Apply saved preferences
-        if (video) {
-            video.muted = videoPrefs.muted;
-            video.volume = videoPrefs.volume;
             
-            // Save preferences when changed
-            video.addEventListener('volumechange', () => {
-                localStorage.setItem('niranta_video_muted', video.muted);
-                localStorage.setItem('niranta_video_volume', video.volume);
+            heroVideo.addEventListener('canplay', function() {
+                console.log('Video can play');
+                // Force play the video
+                const playPromise = heroVideo.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        console.log('Video playing successfully');
+                    }).catch(function(error) {
+                        console.error('Video play failed:', error);
+                        handleVideoError();
+                    });
+                }
             });
+            
+            heroVideo.addEventListener('error', function(e) {
+                console.error('Video error:', e);
+                handleVideoError();
+            });
+            
+            heroVideo.addEventListener('stalled', function() {
+                console.warn('Video stalled');
+            });
+            
+            // Error handling function
+            function handleVideoError() {
+                console.log('Handling video error - switching to fallback');
+                if (heroVideo) {
+                    heroVideo.style.display = 'none';
+                }
+                if (heroContainer) {
+                    heroContainer.style.backgroundColor = '#F2ECE0';
+                    // Change text color for fallback
+                    const textElements = heroContainer.querySelectorAll('[style*="color: #FFFFFF"]');
+                    textElements.forEach(el => {
+                        el.style.color = '#482500';
+                    });
+                    // Hide overlay
+                    const overlay = heroContainer.querySelector('[style*="background: rgba(0, 0, 0, 0.4)"]');
+                    if (overlay) overlay.style.display = 'none';
+                }
+            }
+            
+            // Force load and play after a short delay
+            setTimeout(() => {
+                if (heroVideo.readyState === 0) {
+                    console.log('Forcing video load...');
+                    heroVideo.load();
+                }
+            }, 100);
+            
+            // Backup play attempt
+            setTimeout(() => {
+                if (heroVideo.paused) {
+                    console.log('Video still paused, attempting to play...');
+                    heroVideo.play().catch(handleVideoError);
+                }
+            }, 1000);
+            
+            // Debug click handler (remove in production)
+            heroVideo.addEventListener('click', function() {
+                console.log('Video clicked - Current state:');
+                console.log('- Ready State:', heroVideo.readyState);
+                console.log('- Network State:', heroVideo.networkState);
+                console.log('- Paused:', heroVideo.paused);
+                console.log('- Muted:', heroVideo.muted);
+                console.log('- Current Source:', heroVideo.currentSrc);
+                console.log('- Duration:', heroVideo.duration);
+                console.log('- Video Width:', heroVideo.videoWidth);
+                console.log('- Video Height:', heroVideo.videoHeight);
+                
+                if (heroVideo.paused) {
+                    heroVideo.play().catch(console.error);
+                }
+            });
+            
+            // Alternative loading approach if standard fails
+            setTimeout(() => {
+                if (heroVideo.readyState < 2) {
+                    console.log('Video not loaded after 3 seconds, trying alternative approach...');
+                    heroVideo.src = '{{ asset("vidniranta.mp4") }}';
+                    heroVideo.load();
+                }
+            }, 3000);
+        } else {
+            console.error('Hero video element not found');
         }
+
     });
 </script>
 

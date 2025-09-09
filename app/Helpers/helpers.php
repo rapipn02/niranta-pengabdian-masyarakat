@@ -67,3 +67,60 @@ if (!function_exists('blog_image')) {
         return image_url($imagePath);
     }
 }
+
+if (!function_exists('recipe_video')) {
+    /**
+     * Generate URL for recipe videos
+     * 
+     * @param string $videoPath
+     * @return string|null
+     */
+    function recipe_video($videoPath) {
+        if (empty($videoPath)) {
+            return null;
+        }
+        
+        // Remove leading slash if exists
+        $videoPath = ltrim($videoPath, '/');
+        
+        // Return storage URL
+        return asset('storage/' . $videoPath);
+    }
+}
+
+if (!function_exists('get_visitor_stats')) {
+    /**
+     * Get visitor statistics for footer display
+     * 
+     * @return array
+     */
+    function get_visitor_stats() {
+        try {
+            if (!class_exists('App\Models\PageView')) {
+                return [
+                    'today' => 0,
+                    'week' => 0, 
+                    'month' => 0,
+                    'total' => 0
+                ];
+            }
+
+            $pageView = new \App\Models\PageView();
+            
+            return [
+                'today' => $pageView::getTodayViews(),
+                'week' => $pageView::getWeekViews(),
+                'month' => $pageView::getMonthViews(),
+                'total' => $pageView::getTotalViews()
+            ];
+        } catch (\Exception $e) {
+            // Fallback jika ada error
+            return [
+                'today' => 0,
+                'week' => 0,
+                'month' => 0, 
+                'total' => 0
+            ];
+        }
+    }
+}

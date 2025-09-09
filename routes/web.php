@@ -5,12 +5,16 @@ use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\RecipeController;
 use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\AboutController;
 use App\Http\Controllers\TranslationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// About Us Page
+Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 // Product Page (Dynamic)
 Route::get('/product', [ProductController::class, 'index'])->name('product');
@@ -84,7 +88,8 @@ Route::middleware('auth')->group(function () {
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('dashboard');
+    Route::get('/statistics', [App\Http\Controllers\Admin\AdminController::class, 'statistics'])->name('statistics');
     
     // Product Routes
     Route::get('/products', [App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products');

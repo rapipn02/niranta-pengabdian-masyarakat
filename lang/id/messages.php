@@ -24,6 +24,28 @@ return [
         'view_all_recipes' => 'Lihat Semua Resep',
     ],
 
+    // About Page
+    'about' => [
+        'vision_title' => 'VISION',
+        'vision_subtitle' => 'Visi',
+        'vision_description' => 'To elevate local potential into a shared strength, creating prosperity that benefits many.',
+        'vision_description_id' => 'Mengangkat potensi lokal menjadi kekuatan bersama, demi menciptakan kemakmuran yang bisa dirasakan banyak pihak.',
+        'mission_title' => 'MISSION',
+        'mission_subtitle' => 'Misi',
+        'mission_1' => 'To deliver high-quality, safe, and consistent palm sugar products.',
+        'mission_1_id' => 'Menyajikan produk gula aren berkualitas tinggi yang aman dan konsisten.',
+        'mission_2' => 'To promote sustainable farming practices in collaboration with local farmers.',
+        'mission_2_id' => 'Meningkatkan praktik pertanian berkelanjutan bersama petani lokal.',
+        'mission_3' => 'To ensure transparency throughout the production and distribution process.',
+        'mission_3_id' => 'Memulai transparansi proses dan produksi hingga distribusi.',
+        'mission_4' => 'To create employment opportunities and strengthen the rural economy.',
+        'mission_4_id' => 'Membuka lapangan kerja dan memperkuat ekonomi pedesaan.',
+        'mission_5' => 'To empower local communities through long-term partnerships.',
+        'mission_5_id' => 'Memberdayakan masyarakat lokal melalui kemitraan jangka panjang.',
+        'mission_6' => 'To build global collaborations with professional and reliable services.',
+        'mission_6_id' => 'Membangun kerjasama global dengan layanan profesional dan terpercaya.',
+    ],
+
     // Contact Page
     'contact' => [
         'title' => 'Hubungi Kami',
