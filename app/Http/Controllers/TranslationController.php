@@ -31,41 +31,55 @@ class TranslationController extends Controller
         $targetLanguage = $request->input('target_language', 'en');
         $sourceLanguage = $request->input('source_language', 'id');
         
+        // Rate limiting: max 10 translations per minute per IP
+        $key = 'translate_attempts_' . $request->ip();
+        $attempts = cache($key, 0);
+        
+        if ($attempts >= 10) {
+            return response()->json([
+                'error' => 'Rate limit exceeded. Please wait before making more translation requests.',
+                'fallback_text' => $text
+            ], 429);
+        }
+        
+        // Increment attempt counter
+        cache([$key => $attempts + 1], now()->addMinutes(1));
+
         // Google Translate API key (you need to get this from Google Cloud Console)
         $apiKey = env('GOOGLE_TRANSLATE_API_KEY');
         
         if (!$apiKey) {
             return response()->json([
-                'error' => 'Google Translate API key not configured'
+                'error' => 'Google Translate API key not configured',
+                'fallback_text' => $text
             ], 500);
         }
-        
+
         try {
-            $response = Http::post("https://translation.googleapis.com/language/translate/v2", [
-                'key' => $apiKey,
-                'q' => $text,
-                'source' => $sourceLanguage,
-                'target' => $targetLanguage,
-                'format' => 'text'
+            // Use the GoogleTranslateService
+            $translateService = app(\App\Services\GoogleTranslateService::class);
+            $translatedText = $translateService->translate($text, $targetLanguage, $sourceLanguage);
+            
+            // If translation failed or returned original text, it means there was an error
+            if ($translatedText === $text) {
+                return response()->json([
+                    'error' => 'Translation service temporarily unavailable. Please check API quota.',
+                    'fallback_text' => $text
+                ], 503);
+            }
+            
+            return response()->json([
+                'translated_text' => $translatedText,
+                'source_language' => $sourceLanguage,
+                'target_language' => $targetLanguage
             ]);
             
-            if ($response->successful()) {
-                $data = $response->json();
-                $translatedText = $data['data']['translations'][0]['translatedText'];
-                
-                return response()->json([
-                    'translated_text' => $translatedText,
-                    'source_language' => $sourceLanguage,
-                    'target_language' => $targetLanguage
-                ]);
-            } else {
-                return response()->json([
-                    'error' => 'Translation failed'
-                ], 500);
-            }
         } catch (\Exception $e) {
+            \Log::error('Translation controller error: ' . $e->getMessage());
+            
             return response()->json([
-                'error' => 'Translation service unavailable'
+                'error' => 'Translation service error: ' . $e->getMessage(),
+                'fallback_text' => $text
             ], 500);
         }
     }

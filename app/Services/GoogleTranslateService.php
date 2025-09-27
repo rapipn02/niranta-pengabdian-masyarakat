@@ -16,7 +16,7 @@ class GoogleTranslateService
     }
 
     /**
-     * Translate text using Google Translate API
+     * Translate text using Google Translate API with caching
      */
     public function translate($text, $targetLanguage = 'en', $sourceLanguage = 'id')
     {
@@ -27,6 +27,16 @@ class GoogleTranslateService
 
         if (empty($text)) {
             return $text;
+        }
+
+        // Create a cache key based on text content and languages
+        $cacheKey = 'translation_' . md5($text . $sourceLanguage . $targetLanguage);
+        
+        // Check if translation exists in cache
+        $cached = cache($cacheKey);
+        if ($cached) {
+            Log::info('Using cached translation for: ' . substr($text, 0, 50));
+            return $cached;
         }
 
         try {
@@ -40,18 +50,37 @@ class GoogleTranslateService
                 'format' => 'text'
             ];
             
-            $response = Http::post($url, $requestData);
+            $response = Http::timeout(10)->post($url, $requestData);
 
             if ($response->successful()) {
                 $data = $response->json();
                 if (isset($data['data']['translations'][0]['translatedText'])) {
-                    return $data['data']['translations'][0]['translatedText'];
+                    $translatedText = $data['data']['translations'][0]['translatedText'];
+                    
+                    // Cache the translation for 24 hours
+                    cache([$cacheKey => $translatedText], now()->addHours(24));
+                    
+                    return $translatedText;
                 } else {
                     Log::error('Unexpected response structure: ' . json_encode($data));
                     return $text;
                 }
             } else {
-                Log::error('Google Translate API error: ' . $response->body());
+                $errorBody = $response->body();
+                $statusCode = $response->status();
+                
+                // Log specific error details
+                Log::error("Google Translate API error (Status: {$statusCode}): " . $errorBody);
+                
+                // Handle specific error cases
+                if ($statusCode === 403) {
+                    Log::warning('Google Translate API: Rate limit exceeded or quota exhausted');
+                } elseif ($statusCode === 400) {
+                    Log::warning('Google Translate API: Bad request - check parameters');
+                } elseif ($statusCode === 401) {
+                    Log::warning('Google Translate API: Invalid API key');
+                }
+                
                 return $text;
             }
         } catch (\Exception $e) {

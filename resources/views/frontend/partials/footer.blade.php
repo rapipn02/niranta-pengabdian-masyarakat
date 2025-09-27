@@ -442,15 +442,59 @@ async function translateDynamicContent(text, targetLang = 'en') {
         const data = await response.json();
         
         if (response.ok) {
-            return data.translated_text;
+            return data.translated_text || text;
         } else {
-            console.error('Translation error:', data.error);
-            return text; // Return original text if translation fails
+            // Handle specific error cases
+            if (response.status === 429) {
+                console.warn('Rate limit exceeded for translation');
+                // Show user-friendly message
+                showTranslationMessage('Translation rate limit exceeded. Please wait a moment.');
+            } else if (response.status === 503) {
+                console.warn('Translation service temporarily unavailable');
+                showTranslationMessage('Translation service temporarily unavailable. Using original text.');
+            } else {
+                console.error('Translation error:', data.error);
+                showTranslationMessage('Translation temporarily unavailable.');
+            }
+            
+            return data.fallback_text || text; // Return fallback text
         }
     } catch (error) {
         console.error('Translation request failed:', error);
+        showTranslationMessage('Translation service unavailable.');
         return text; // Return original text if request fails
     }
+}
+
+// Function to show translation status messages
+function showTranslationMessage(message) {
+    // Create or update status message element
+    let statusEl = document.getElementById('translation-status');
+    if (!statusEl) {
+        statusEl = document.createElement('div');
+        statusEl.id = 'translation-status';
+        statusEl.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #482500;
+            color: #F2ECE0;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 9999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        `;
+        document.body.appendChild(statusEl);
+    }
+    
+    statusEl.textContent = message;
+    statusEl.style.display = 'block';
+    
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+        statusEl.style.display = 'none';
+    }, 5000);
 }
 
 // Helper function to translate all dynamic content on page
